@@ -1,3 +1,7 @@
+<img src="https://github.com/kaushal937/NetBreaker/assets/logowhite.svg" width="100%" align="center"></img>
+
+<hr>
+
 <h1 align="center">NetBreaker</h1>
 
 <p align="center">
@@ -35,7 +39,6 @@
 
 <ul>
   <li>TypeScript</li>
-  <li>JavaScript</li>
   <li>C++</li>
   <li>Go</li>
 </ul>
