@@ -3,3 +3,7 @@ node_modules
 .vscode
 /dist
 src/controllers/logs/reqLogs/liblogger.so
+/lib
+/proxy
+start.sh
+main/main

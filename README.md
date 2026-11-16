@@ -39,7 +39,7 @@
 
 <ul>
   <li>TypeScript</li>
-  <li>C++</li>
+  <li>C++ (Future Scope)</li>
   <li>Go</li>
 </ul>
 
@@ -69,10 +69,14 @@
   See the <a href="LICENSE">LICENSE</a> file for licensing information.
 </p>
 
+<strong>
+  Note : NetBreaker is going through major architectural modifications. Using it is not advised.
+</strong>
+
 <hr>
 
 <p align="center">
   Copyright &copy; 2026
-  <a href="https://github.com/kaushal937">Kaushal</a>.<br>
+  <a href="https://github.com/kaushal937">kaushal937</a>.<br>
   All rights reserved.
 </p>
