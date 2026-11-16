@@ -1,4 +1,4 @@
-<img src="https://github.com/kaushal937/NetBreaker/assets/logowhite.svg" width="100%" align="center"></img>
+<img src="https://github.com/NetBreaker-org/NetBreaker/blob/main/assets/logowhite.svg" width="100%" align="center"></img>
 
 <hr>
 
