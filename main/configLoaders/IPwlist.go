@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/kaushal937/NetBreaker/main/logger"
@@ -19,14 +20,14 @@ func LoadIPWhitelist(filePath *string) (*[]string, error) {
 	}
 
 	//innitialize and parse IP Whitelist
-	var blackList []string
+	var whiteList []string
 
-	blackList = strings.Split(string(byte_slice), "\n")
-	if fmt.Sprintf("%T", blackList) != "[]string" {
+	whiteList = strings.Split(string(byte_slice), "\n")
+	if fmt.Sprintf("%T", whiteList) != "[]string" {
 		return nil, errors.New("error_in_reading_whitelist")
 	}
 
-	contentptr := &blackList
+	contentptr := &whiteList
 	fmt.Println("...Succesfully initialized IP whitelist  ✔")
 	return contentptr, nil
 }
@@ -52,26 +53,47 @@ func AppendIPWhiteList(ip_a []string) int {
 	}
 }
 
+// stack handler for DeleteIPWhiteList function
+// FIFO indexing
+var DeleteIPWhiteList_FIFO [][]string
+
+// Using this lease variable so that this function can't be called more than once at a time, reducing whitelist file / config object corrruption
+// 1 when a goroutine of DeleteIPWhiteList, 0 elsewise
+var DeleteIPWhiteListLease int = 0
+
+func DeleteIPWhiteList(ip_a []string) {
+	DeleteIPWhiteList_FIFO = append(DeleteIPWhiteList_FIFO, ip_a)
+	clear_DeleteIPWhiteList()
+}
+
+func clear_DeleteIPWhiteList() {
+	if DeleteIPWhiteListLease != 0 {
+		go DeleteIPWhiteList_(DeleteIPWhiteList_FIFO[0])
+	} else {
+		return
+	}
+}
+
 // To delete entry in IP Whitelist config object and to the file simultaneously
 // to be called with go prefix, for concurrency
-func DeleteIPWhiteList(ip_a []string) int {
+func DeleteIPWhiteList_(ip_a []string) {
+	//grab lease variable
+	DeleteIPWhiteListLease = 1
+
 	if ConfigObjectIndices.IPWhiteList == nil {
 		var sending_err error = errors.New("Error : Received nil pointer in DeleteIPWhiteList call")
 		logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
-		return 1
 	} else {
 		wlistFile, err := os.Open(ConfigObjectIndices.IPWhiteListFLPTH)
 		if err != nil {
 			logger.WriteLog(&logger.ErrorTypes.Error, &err)
-			return 1
 		}
 		defer wlistFile.Close()
 
-		wlistDir := filepath.Dir(ConfigObjectIndices.IPBlackListFLPTH)
+		wlistDir := filepath.Dir(ConfigObjectIndices.IPWhiteListFLPTH)
 		tmpfile, err := os.CreateTemp(wlistDir, "temp-*.txt")
 		if err != nil {
 			logger.WriteLog(&logger.ErrorTypes.Error, &err)
-			return 1
 		}
 		tempName := tmpfile.Name()
 		defer os.Remove(tempName)
@@ -83,32 +105,59 @@ func DeleteIPWhiteList(ip_a []string) int {
 			line := tmpScanner.Text()
 
 			for i := range ip_a {
+				//Big O notation : O(len(ip_a))
+				if (*ConfigObjectIndices.IPWhiteList)[i] == ip_a[i] {
+					(*ConfigObjectIndices.IPWhiteList)[i] = (*ConfigObjectIndices.IPWhiteList)[len(*ConfigObjectIndices.IPWhiteList)-1]
+					(*ConfigObjectIndices.IPWhiteList) = (*ConfigObjectIndices.IPWhiteList)[:len(*ConfigObjectIndices.IPWhiteList)-1]
+
+				}
+				//Big O notation : O(len(ip_a)^2)
+				//Big Ω*omega_symbol* notation : Ω*omega_symbol*(len(ip_a))
 				if !strings.Contains(line, ip_a[i]) {
 					_, err := fmt.Fprintln(tmpWriter, line)
 					if err != nil {
-						deleteError := fmt.Errorf("Couldn't  delete IP addresses provided. wrote till : %dth index (%s). Closed file.", i, ip_a[i])
+						deleteError := fmt.Errorf("Couldn't delete IP addresses provided (whitelist). Wrote till : %dth index (%s). Closed file.", i, ip_a[i])
 						logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
 						tmpfile.Close()
-						return 1
 					}
 				}
 			}
 		}
 
 		if tmpScanner.Err() != nil {
+			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (whitelist)")
+			logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
+			wlistFile.Close() //required because windows, our god father doesn't allow replacing files when it is open by some other software. fun fact : my dih is gonna port this software for windows. also you can't just build yourself for windows, this NetBreaker uses Unix syscall and UDS
 			tmpfile.Close()
-			return 1
+			os.Remove(tempName)
+			return
 		}
 		if tmpWriter.Flush() != nil {
+			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (whitelist)")
+			logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
+			wlistFile.Close() //required because windows, our god father doesn't allow replacing files when it is open by some other software. fun fact : my dih is gonna port this software for windows. also you can't just build yourself for windows, this NetBreaker uses Unix syscall and UDS
 			tmpfile.Close()
-			return 1
+			os.Remove(tempName)
+			return
 		}
 		if tmpfile.Close() != nil {
-			return 1
+			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (whitelist)")
+			logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
+			wlistFile.Close() //required because windows, our god father doesn't allow replacing files when it is open by some other software. fun fact : my dih is gonna port this software for windows. also you can't just build yourself for windows, this NetBreaker uses Unix syscall and UDS
+			os.Remove(tempName)
+			return
 		}
-		wlistFile.Close() //required because windows, our god father doesn't allow replacing files when is open by some other software. fun fact : my dih is gonna port this software for windows
 
-		os.Rename(tempName, wlistDir)
-		return 1
+		wlistFile.Close() //required because windows, our god father doesn't allow replacing files when it is open by some other software. fun fact : my dih is gonna port this software for windows. also you can't just build yourself for windows, this NetBreaker uses Unix syscall and UDS
+		err_2 := os.Rename(tempName, wlistDir)
+		if err_2 != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err_2)
+			os.Remove(tempName)
+		}
+
+		//release lease variable & clear FIFO list's 0 indexed value
+		DeleteIPWhiteListLease = 0
+
+		DeleteIPWhiteList_FIFO = slices.Delete(DeleteIPWhiteList_FIFO, 0, 1) //there might be a better way to do this
 	}
 }
