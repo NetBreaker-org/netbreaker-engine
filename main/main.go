@@ -46,12 +46,11 @@ func main() {
 
 	configloaders.ConfigObjectIndices.IPWhiteList = contentWList
 	configloaders.ConfigObjectIndices.IPWhiteListFLPTH = IPwlistPath
-	fmt.Println(*configloaders.ConfigObjectIndices.IPWhiteList)
 
 	//Start Service
 	serverAddr := ":" + MainConfig.Port
 
-	configloaders.DeleteIPWhiteList([]string{"33.245.235.53"})
+	configloaders.DeleteIPBlackList([]string{"234.435.2.5"})
 
 	server := http.NewServeMux()
 	fmt.Printf("Started server on %s...\n", serverAddr)
