@@ -1,9 +1,11 @@
 package configloaders
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/kaushal937/NetBreaker/main/logger"
@@ -58,14 +60,58 @@ func DeleteIPBlackList(ip_a []string) int {
 	if ConfigObjectIndices.IPBlackList == nil {
 		var sending_err error = errors.New("Error : Received nil pointer in DeleteIPBlackList call")
 		logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
-		return 0
+		return 1
 	} else {
-		blistFile, err := os.OpenFile(ConfigObjectIndices.IPBlackListFLPTH, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		blistFile, err := os.Open(ConfigObjectIndices.IPBlackListFLPTH)
 		if err != nil {
-			return 0
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+			return 1
 		}
-		//write new logic here
-		blistFile.Close()
+		defer blistFile.Close()
+
+		blistDir := filepath.Dir(ConfigObjectIndices.IPBlackListFLPTH)
+		tmpfile, err := os.CreateTemp(blistDir, "temp-*.txt")
+		if err != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+			return 1
+		}
+		tempName := tmpfile.Name()
+		defer os.Remove(tempName)
+
+		tmpScanner := bufio.NewScanner(blistFile)
+		tmpWriter := bufio.NewWriter(tmpfile)
+
+		for tmpScanner.Scan() {
+			line := tmpScanner.Text()
+
+			for i := range ip_a {
+				if !strings.Contains(line, ip_a[i]) {
+
+					_, err := fmt.Fprintln(tmpWriter, line)
+					if err != nil {
+						deleteError := fmt.Errorf("Couldn't  delete IP addresses provided. wrote till : %dth index (%s). Closed file.", i, ip_a[i])
+						logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
+						tmpfile.Close()
+						return 1
+					}
+				}
+			}
+		}
+
+		if tmpScanner.Err() != nil {
+			tmpfile.Close()
+			return 1
+		}
+		if tmpWriter.Flush() != nil {
+			tmpfile.Close()
+			return 1
+		}
+		if tmpfile.Close() != nil {
+			return 1
+		}
+		blistFile.Close() //required because windows, our god father doesn't allow replacing files when is open by some other software. fun fact : my dih is gonna port this software for windows
+
+		os.Rename(tempName, blistDir)
 		return 1
 	}
 }

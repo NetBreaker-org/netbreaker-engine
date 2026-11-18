@@ -1,9 +1,11 @@
 package configloaders
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/kaushal937/NetBreaker/main/logger"
@@ -46,6 +48,67 @@ func AppendIPWhiteList(ip_a []string) int {
 			wlistFile.WriteString(ip_a[i] + "\n")
 		}
 		wlistFile.Close()
+		return 1
+	}
+}
+
+// To delete entry in IP Whitelist config object and to the file simultaneously
+// to be called with go prefix, for concurrency
+func DeleteIPWhiteList(ip_a []string) int {
+	if ConfigObjectIndices.IPWhiteList == nil {
+		var sending_err error = errors.New("Error : Received nil pointer in DeleteIPWhiteList call")
+		logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
+		return 1
+	} else {
+		wlistFile, err := os.Open(ConfigObjectIndices.IPWhiteListFLPTH)
+		if err != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+			return 1
+		}
+		defer wlistFile.Close()
+
+		wlistDir := filepath.Dir(ConfigObjectIndices.IPBlackListFLPTH)
+		tmpfile, err := os.CreateTemp(wlistDir, "temp-*.txt")
+		if err != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+			return 1
+		}
+		tempName := tmpfile.Name()
+		defer os.Remove(tempName)
+
+		tmpScanner := bufio.NewScanner(wlistFile)
+		tmpWriter := bufio.NewWriter(tmpfile)
+
+		for tmpScanner.Scan() {
+			line := tmpScanner.Text()
+
+			for i := range ip_a {
+				if !strings.Contains(line, ip_a[i]) {
+					_, err := fmt.Fprintln(tmpWriter, line)
+					if err != nil {
+						deleteError := fmt.Errorf("Couldn't  delete IP addresses provided. wrote till : %dth index (%s). Closed file.", i, ip_a[i])
+						logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
+						tmpfile.Close()
+						return 1
+					}
+				}
+			}
+		}
+
+		if tmpScanner.Err() != nil {
+			tmpfile.Close()
+			return 1
+		}
+		if tmpWriter.Flush() != nil {
+			tmpfile.Close()
+			return 1
+		}
+		if tmpfile.Close() != nil {
+			return 1
+		}
+		wlistFile.Close() //required because windows, our god father doesn't allow replacing files when is open by some other software. fun fact : my dih is gonna port this software for windows
+
+		os.Rename(tempName, wlistDir)
 		return 1
 	}
 }
