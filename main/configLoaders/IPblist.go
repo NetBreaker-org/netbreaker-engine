@@ -118,7 +118,7 @@ func DeleteIPBlackList_(ip_a []string) {
 				if !strings.Contains(line, ip_a[i]) {
 					_, err := fmt.Fprintln(tmpWriter, line)
 					if err != nil {
-						deleteError := fmt.Errorf("Couldn't  delete IP addresses provided. Wrote till : %dth index (%s). Closed file.", i, ip_a[i])
+						deleteError := fmt.Errorf("Couldn't delete IP addresses provided (blacklist). Wrote till : %dth index (%s). Closed file.", i, ip_a[i])
 						logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
 						tmpfile.Close()
 					}
@@ -127,7 +127,7 @@ func DeleteIPBlackList_(ip_a []string) {
 		}
 
 		if tmpScanner.Err() != nil {
-			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (whitelist)")
+			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (blacklist)")
 			logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
 			blistFile.Close() //required because windows, our god father doesn't allow replacing files when it is open by some other software. fun fact : my dih is gonna port this software for windows. also you can't just build yourself for windows, this NetBreaker uses Unix syscall and UDS
 			tmpfile.Close()
@@ -135,7 +135,7 @@ func DeleteIPBlackList_(ip_a []string) {
 			return
 		}
 		if tmpWriter.Flush() != nil {
-			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (whitelist)")
+			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (blacklist)")
 			logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
 			blistFile.Close() //required because windows, our god father doesn't allow replacing files when it is open by some other software. fun fact : my dih is gonna port this software for windows. also you can't just build yourself for windows, this NetBreaker uses Unix syscall and UDS
 			tmpfile.Close()
@@ -143,7 +143,7 @@ func DeleteIPBlackList_(ip_a []string) {
 			return
 		}
 		if tmpfile.Close() != nil {
-			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (whitelist)")
+			deleteError := fmt.Errorf("Couldn't delete IP addresses provided (blacklist)")
 			logger.WriteLog(&logger.ErrorTypes.Error, &deleteError)
 			blistFile.Close() //required because windows, our god father doesn't allow replacing files when it is open by some other software. fun fact : my dih is gonna port this software for windows. also you can't just build yourself for windows, this NetBreaker uses Unix syscall and UDS
 			os.Remove(tempName)
