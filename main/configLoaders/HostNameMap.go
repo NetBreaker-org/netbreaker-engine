@@ -8,6 +8,8 @@ import (
 	"github.com/kaushal937/NetBreaker/main/configLoaders/configInterfaces"
 )
 
+// read the raw IPMap.json, with no meta data.
+// misc data is stored in stats.json
 func HostnameMapping(filePath *string) (*[]configInterfaces.StatusMapping, error) {
 	//get buffer data of that file
 	byte_slice, err := os.ReadFile(*filePath)

@@ -57,30 +57,32 @@ func AppendIPBlackList(ip_a []string) int {
 
 // stack handler for DeleteIPBlackList function
 // FIFO indexing
-var DeleteIPBlackList_FIFO [][]string
+var deleteIPBlackList_FIFO [][]string
 
 // Using this lease variable so that this function can't be called more than once at a time, reducing blacklist file / config object corrruption
 // 1 when a goroutine of DeleteIPBlackList, 0 elsewise
-var DeleteIPBlackListLease int = 0
+var deleteIPBlackListLease int = 0
 
 func DeleteIPBlackList(ip_a []string) {
-	DeleteIPBlackList_FIFO = append(DeleteIPBlackList_FIFO, ip_a)
+	deleteIPBlackList_FIFO = append(deleteIPBlackList_FIFO, ip_a)
 	clear_DeleteIPBlackList()
 }
 
 func clear_DeleteIPBlackList() {
-	if DeleteIPBlackListLease == 0 {
-		go DeleteIPBlackList_(DeleteIPBlackList_FIFO[0])
+	if deleteIPBlackListLease == 0 {
+		go deleteIPBlackList_(deleteIPBlackList_FIFO[0])
 	} else {
+		var sending_err error = errors.New("Error : Couldn't start DeleteIPBlackList routine")
+		logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
 		return
 	}
 }
 
 // To delete entry in IP Blacklist config object and to the file simultaneously
 // to be called with go prefix, for concurrency
-func DeleteIPBlackList_(ip_a []string) {
+func deleteIPBlackList_(ip_a []string) {
 	//grab lease variable
-	DeleteIPBlackListLease = 1
+	deleteIPBlackListLease = 1
 
 	if ConfigObjectIndices.IPBlackList == nil {
 		var sending_err error = errors.New("Error : Received nil pointer in DeleteIPBlackList call")
@@ -115,7 +117,7 @@ func DeleteIPBlackList_(ip_a []string) {
 				}
 				//Big O notation : O(len(ip_a)^2)
 				//Big Ω*omega_symbol* notation : Ω*omega_symbol*(len(ip_a))
-				if !strings.Contains(line, ip_a[i]) {
+				if line != ip_a[i] {
 					_, err := fmt.Fprintln(tmpWriter, line)
 					if err != nil {
 						deleteError := fmt.Errorf("Couldn't delete IP addresses provided (blacklist). Wrote till : %dth index (%s). Closed file.", i, ip_a[i])
@@ -151,15 +153,15 @@ func DeleteIPBlackList_(ip_a []string) {
 		}
 
 		blistFile.Close() //required because windows, our god father doesn't allow replacing files when it is open by some other software. fun fact : my dih is gonna port this software for windows. also you can't just build yourself for windows, this NetBreaker uses Unix syscall and UDS
-		err_2 := os.Rename(tempName, blistDir)
+		err_2 := os.Rename(tempName, ConfigObjectIndices.IPBlackListFLPTH)
 		if err_2 != nil {
 			logger.WriteLog(&logger.ErrorTypes.Error, &err_2)
 			os.Remove(tempName)
 		}
 
 		//release lease variable & clear FIFO list's 0 indexed value
-		DeleteIPBlackListLease = 0
+		deleteIPBlackListLease = 0
 
-		DeleteIPBlackList_FIFO = slices.Delete(DeleteIPBlackList_FIFO, 0, 1) //there might be a better way to do this
+		deleteIPBlackList_FIFO = slices.Delete(deleteIPBlackList_FIFO, 0, 1) //there might be a better way to do this
 	}
 }
