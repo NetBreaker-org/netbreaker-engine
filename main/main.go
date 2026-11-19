@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
 
 	configloaders "github.com/kaushal937/NetBreaker/main/configLoaders"
 	"github.com/kaushal937/NetBreaker/main/generals"
@@ -11,8 +12,8 @@ import (
 
 func main() {
 	//Load config file main_config.json
-	mainConfigPath := generals.EnvPath.SystemPath + "/etc/netbreaker/main_config.json"
-	MainConfig, err := configloaders.MainConfig(&mainConfigPath)
+	configloaders.ConfigObjectIndices.ServerConfigFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/main_config.json")
+	MainConfig, err := configloaders.MainConfig(&configloaders.ConfigObjectIndices.ServerConfigFLPTH)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		fmt.Println(err)
@@ -20,8 +21,8 @@ func main() {
 	}
 
 	//Load config file IP-Black List
-	IPblistPath := generals.EnvPath.SystemPath + "/etc/netbreaker/ipBlackList.txt"
-	contentBList, err := configloaders.LoadIPBlacklist(&IPblistPath)
+	configloaders.ConfigObjectIndices.IPBlackListFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/ipBlackList.txt")
+	contentBList, err := configloaders.LoadIPBlacklist(&configloaders.ConfigObjectIndices.IPBlackListFLPTH)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		fmt.Println(err)
@@ -29,8 +30,27 @@ func main() {
 	}
 
 	//Load config file IP-White List
-	IPwlistPath := generals.EnvPath.SystemPath + "/etc/netbreaker/ipWhiteList.txt"
-	contentWList, err := configloaders.LoadIPWhitelist(&IPwlistPath)
+	configloaders.ConfigObjectIndices.IPWhiteListFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/ipWhiteList.txt")
+	contentWList, err := configloaders.LoadIPWhitelist(&configloaders.ConfigObjectIndices.IPWhiteListFLPTH)
+	if err != nil {
+		logger.WriteLog(&logger.ErrorTypes.Error, &err)
+		fmt.Println(err)
+		return
+	}
+
+	//Load IPMap
+	configloaders.ConfigObjectIndices.AvailableHostnamesFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/parsed/availableHostnamesListFile.txt")
+	configloaders.ConfigObjectIndices.IPMapFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/IPMap.json")
+	contentAvailableHostnameArray, err := configloaders.AvailableHostnameReader(&configloaders.ConfigObjectIndices.IPMapFLPTH)
+	if err != nil {
+		logger.WriteLog(&logger.ErrorTypes.Error, &err)
+		fmt.Println(err)
+		return
+	}
+
+	//Load hostnameMapping
+	configloaders.ConfigObjectIndices.HostnameMappingFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/parsed/hostnameMapping.json")
+	contentHostnameMapping, err := configloaders.HostnameMapping(&configloaders.ConfigObjectIndices.HostnameMappingFLPTH)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		fmt.Println(err)
@@ -39,13 +59,13 @@ func main() {
 
 	//Index config objects
 	configloaders.ConfigObjectIndices.ServerConfig = MainConfig
-	configloaders.ConfigObjectIndices.ServerConfigFLPTH = mainConfigPath
-
 	configloaders.ConfigObjectIndices.IPBlackList = contentBList
-	configloaders.ConfigObjectIndices.IPBlackListFLPTH = IPblistPath
-
 	configloaders.ConfigObjectIndices.IPWhiteList = contentWList
-	configloaders.ConfigObjectIndices.IPWhiteListFLPTH = IPwlistPath
+	configloaders.ConfigObjectIndices.IPMap = contentAvailableHostnameArray
+	configloaders.ConfigObjectIndices.HostnameMapping = contentHostnameMapping
+
+	fmt.Println(*configloaders.ConfigObjectIndices.IPMap)
+	fmt.Println(*configloaders.ConfigObjectIndices.HostnameMapping)
 
 	//Start Service
 	serverAddr := ":" + MainConfig.Port

@@ -1,7 +1,7 @@
 package configInterfaces
 
 type HostnameServerArrayData struct {
-	Address        int      `json:"address"`
+	Address        string   `json:"address"`
 	Status         int      `json:"status"`
 	LoadAssignment []string `json:"loadAssignment"`
 }
@@ -24,11 +24,6 @@ type ProxyServices struct {
 	Address     string `json:"proxy_server_address"`
 	ProxyEngine string `json:"proxy_engine"`
 	Version     string `json:"version"`
-}
-
-// Array of hostnames available
-type IPMap struct {
-	Key []string `json:"key"`
 }
 
 // Data struct for main config
@@ -60,4 +55,11 @@ type ConfigObjectPointers struct {
 
 	IPWhiteList      *[]string `json:"ip_wl"`
 	IPWhiteListFLPTH string    `json:"IPWhiteListFLPTH"`
+
+	IPMap                   *[]string `json:"ip_map"`
+	AvailableHostnamesFLPTH string    `json:"AvailableHostnamesFLPTH"`
+	IPMapFLPTH              string    `json:"IPMapFLPTH"`
+
+	HostnameMapping      *[]StatusMapping `json:"hostnameMapping_map"`
+	HostnameMappingFLPTH string           `json:"hostnameMappingFLPTH"`
 }
