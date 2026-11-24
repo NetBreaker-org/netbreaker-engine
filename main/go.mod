@@ -1,4 +1,4 @@
-module github.com/kaushal937/NetBreaker/main
+module github.com/NetBreaker-org/netbreaker-engine/main
 
 go 1.27.3
 

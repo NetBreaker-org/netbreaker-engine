@@ -45,10 +45,49 @@ type ServerConfig struct {
 	Workers                             string `json:"workers"`
 }
 
+type InstanceServerConfig struct {
+	Status                              string `json:"status"`
+	Port                                string `json:"port"`
+	Cipherkey                           string `json:"cipherkey"`
+	CookieEncryptOption                 string `json:"cookieEncryptOption"`
+	MaxRequestRateLimit                 string `json:"maxRequestRateLimit"`
+	InspectOriginMode                   string `json:"inspectOriginMode"`
+	AdminMode                           string `json:"adminMode"`
+	AdminDefinedPath                    string `json:"adminDefinedPath"`
+	AdminDefinedPathRequiredReloadCount string `json:"adminDefinedPathRequiredReloadCount"`
+	AdminDefinedPathReloadTimeWindow    string `json:"adminDefinedPathReloadTimeWindow"`
+	Protocol                            string `json:"protocol"`
+	SSLKeyPath                          string `json:"sslKeyPath"`
+	SSLCertPath                         string `json:"sslCertPath"`
+	ErrorPagePort                       string `json:"errorPagePort"`
+	Workers                             string `json:"workers"`
+}
+
+// type for instanceList
+type InstancesJson struct {
+	Name   string `json:"instance_identifier"`
+	Dir    string `json:"instance_dir"`
+	Schema string `json:"schema_used"`
+}
+
 // Index of all config objects
 type ConfigObjectPointers struct {
 	ServerConfig      *ServerConfig `json:"ServerConfig"`
 	ServerConfigFLPTH string        `json:"ServerConfigFLPTH"`
+
+	InstanceList      *[]InstancesJson `json:"InstanceList"`
+	InstanceListFLPTH string           `json:"InstanceListFLPTH"`
+
+	IPBlackList      *[]string `json:"ip_bl"`
+	IPBlackListFLPTH string    `json:"IPBlackListFLPTH"`
+
+	IPWhiteList      *[]string `json:"ip_wl"`
+	IPWhiteListFLPTH string    `json:"IPWhiteListFLPTH"`
+}
+
+type InstaceConfigObjectPointers struct {
+	ServerConfig      *InstanceServerConfig `json:"ServerConfig"`
+	ServerConfigFLPTH string                `json:"ServerConfigFLPTH"`
 
 	IPBlackList      *[]string `json:"ip_bl"`
 	IPBlackListFLPTH string    `json:"IPBlackListFLPTH"`
@@ -63,3 +102,5 @@ type ConfigObjectPointers struct {
 	HostnameMapping      *[]StatusMapping `json:"hostnameMapping_map"`
 	HostnameMappingFLPTH string           `json:"hostnameMappingFLPTH"`
 }
+
+//Type for array of all instances with their data

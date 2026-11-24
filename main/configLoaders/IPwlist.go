@@ -9,7 +9,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/kaushal937/NetBreaker/main/logger"
+	"github.com/NetBreaker-org/netbreaker-engine/main/logger"
 )
 
 func LoadIPWhitelist(filePath *string) (*[]string, error) {

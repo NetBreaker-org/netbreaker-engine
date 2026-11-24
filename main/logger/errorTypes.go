@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"github.com/kaushal937/NetBreaker/main/generals"
+	"github.com/NetBreaker-org/netbreaker-engine/main/generals"
 )
 
 var ErrorTypes generals.ErrorTypesType = generals.ErrorTypesType{

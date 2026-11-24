@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
-	"github.com/kaushal937/NetBreaker/main/configLoaders/configInterfaces"
-	"github.com/kaushal937/NetBreaker/main/logger"
+	"github.com/NetBreaker-org/netbreaker-engine/main/configLoaders/configInterfaces"
+	"github.com/NetBreaker-org/netbreaker-engine/main/logger"
 )
 
 //feature scope : create backupfile before running hostNameMapFilesBuilder()
@@ -91,6 +92,10 @@ func hostNameMapFilesBuilder(filePath string) error {
 	}
 
 	//create the variable with type of map[string][]string to load the unmarshaled data
+	type fileData struct {
+		Hostname []string `json:"*"`
+	}
+	var loadedFileData []fileData
 	var rawHostnameMapping map[string][]string //fix type mismatch
 	//create an array to store the available hostnames, to route
 	var availableHostnames []string
@@ -98,10 +103,26 @@ func hostNameMapFilesBuilder(filePath string) error {
 	var hostnameMapping []configInterfaces.StatusMapping
 
 	//parse the buffered data into json with the above type interface
-	err = json.Unmarshal([]byte(string(buffFileData)), &rawHostnameMapping)
+	err = json.Unmarshal([]byte(string(buffFileData)), &loadedFileData)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		return err
+	}
+
+	//transfer loadedFileData to rawHostnameMapping map
+	for i := range loadedFileData {
+		var tmp_1 map[string][]string
+		marshaledData, err := json.Marshal(loadedFileData[i])
+		if err != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+		}
+		if err := json.Unmarshal(marshaledData, &tmp_1); err != nil {
+			log.Fatal(err)
+		}
+
+		for key := range tmp_1 {
+			rawHostnameMapping[key] = loadedFileData[i].Hostname
+		}
 	}
 
 	//loop over the map : rawHostnameMapping and prepare data appropriate of []StatusMapping to stream/write to hostname mapping file

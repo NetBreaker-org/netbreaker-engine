@@ -1,7 +1,7 @@
 package configloaders
 
 import (
-	"github.com/kaushal937/NetBreaker/main/configLoaders/configInterfaces"
+	"github.com/NetBreaker-org/netbreaker-engine/main/configLoaders/configInterfaces"
 )
 
 var ConfigObjectIndices configInterfaces.ConfigObjectPointers = configInterfaces.ConfigObjectPointers{}
