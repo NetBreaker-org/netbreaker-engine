@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/NetBreaker-org/netbreaker-engine/main/configLoaders/configInterfaces"
@@ -18,6 +18,11 @@ import (
 // read the raw hostnameMapping.json, with no meta data.
 // misc data is stored in stats.json
 func HostnameMapping(filePath *string, indexInInstanceConfig int) (*[]configInterfaces.StatusMapping, error) {
+	// if len(InstanceConfigObjectIndices) == 0 {
+	// 	fmt.Println("stupid retard goofy motherfucker")
+	// 	return nil, errors.New("stupid retard goofy motherfucker")
+	// }
+
 	//get buffer data of that file
 	byte_slice, err := os.ReadFile(*filePath)
 	if err != nil {
@@ -25,7 +30,7 @@ func HostnameMapping(filePath *string, indexInInstanceConfig int) (*[]configInte
 			var sending_err error = fmt.Errorf("Error : Couldn't read file : %s while loading Hostname Mapping. Attempting to load again", *filePath)
 			logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
 
-			nestedErr := hostNameMapFilesBuilder(InstanceConfigObjectIndices[indexInInstanceConfig].Config.InstanceIPMapFLPTH, indexInInstanceConfig)
+			nestedErr := hostNameMapFilesBuilder(filepath.Join((*ConfigObjectIndices.InstanceList)[indexInInstanceConfig].Dir, "IPMap.json"), indexInInstanceConfig)
 			if nestedErr != nil {
 				var sending_errNested error = fmt.Errorf("Error : Couldn't read file : %s while loading Hostname Mapping. Not attempting again (nestedErr)", *filePath)
 				logger.WriteLog(&logger.ErrorTypes.Error, &sending_errNested)
@@ -93,87 +98,87 @@ func hostNameMapFilesBuilder(filePath string, indexInInstanceConfig int) error {
 
 	//create the variable with type of map[string][]string to load the unmarshaled data
 	type fileData struct {
-		Hostname []string `json:"*"`
+		Hostname string   `json:"hostname"`
+		Pointers []string `json:"pointers"`
 	}
 	var loadedFileData []fileData
-	var rawHostnameMapping map[string][]string //fix type mismatch
 	//create an array to store the available hostnames, to route
 	var availableHostnames []string
 	//create an array with type []StatusMapping to temporarily store that data and then write to the hostname mapping file
 	var hostnameMapping []configInterfaces.StatusMapping
 
 	//parse the buffered data into json with the above type interface
-	err = json.Unmarshal([]byte(string(buffFileData)), &loadedFileData)
+	err = json.Unmarshal(buffFileData, &loadedFileData)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		return err
 	}
 
 	//transfer loadedFileData to rawHostnameMapping map
+	//loop over the loadedFileData :  and prepare data appropriate of []StatusMapping to stream/write to hostname mapping file
 	for i := range loadedFileData {
-		var tmp_1 map[string][]string
-		marshaledData, err := json.Marshal(loadedFileData[i])
-		if err != nil {
-			logger.WriteLog(&logger.ErrorTypes.Error, &err)
-		}
-		if err := json.Unmarshal(marshaledData, &tmp_1); err != nil {
-			log.Fatal(err)
-		}
-
-		for key := range tmp_1 {
-			rawHostnameMapping[key] = loadedFileData[i].Hostname
-		}
-	}
-
-	//loop over the map : rawHostnameMapping and prepare data appropriate of []StatusMapping to stream/write to hostname mapping file
-	for key, value := range rawHostnameMapping {
 		//append all hostnmaes available to availableHostnames array, to be used by proxy engines
-		availableHostnames = append(availableHostnames, key)
+		availableHostnames = append(availableHostnames, loadedFileData[i].Hostname)
 
 		//create a variable of []configInterfaces.HostnameServerArrayData to store the data of type []configInterfaces.HostnameServerArrayData to add to valueToAppend -> which will be appended to hostnameMapping
 		var hostnameServerArrayDataTemplate []configInterfaces.HostnameServerArrayData
 		//loop over value to append to hostnameServerArrayDataTemplate for every instance of the proxied server
-		for i := range value {
-			hostnameServerArrayDataTemplate = append(hostnameServerArrayDataTemplate, configInterfaces.HostnameServerArrayData{Address: value[i], Status: 1, LoadAssignment: []string{}})
+		for k := range loadedFileData[i].Pointers {
+			hostnameServerArrayDataTemplate = append(hostnameServerArrayDataTemplate, configInterfaces.HostnameServerArrayData{Address: loadedFileData[i].Pointers[k], Status: 1, LoadAssignment: []string{}})
 		}
 
 		//prepare valueToAppend of type configInterfaces.StatusMapping, to be appended to hostnameMapping
-		var valueToAppend configInterfaces.StatusMapping = configInterfaces.StatusMapping{Hostname: key, StatusData: hostnameServerArrayDataTemplate, MiscellaneousData: configInterfaces.MiscellaneousData{Views: 0, Reqs: 0}}
+		var valueToAppend configInterfaces.StatusMapping = configInterfaces.StatusMapping{Hostname: loadedFileData[i].Hostname, StatusData: hostnameServerArrayDataTemplate, MiscellaneousData: configInterfaces.MiscellaneousData{Views: 0, Reqs: 0}}
 		hostnameMapping = append(hostnameMapping, valueToAppend)
 	} //hostnameMapping is now ready to be streamed
 
 	//--write hostnameMapping to hostnameMappingFile & availableHostnames to availableHostnamesListFile--
 
 	//create hostnameMappingFile & availableHostnamesListFile
-	hostnameMappingFile, err := os.Create(InstanceConfigObjectIndices[indexInInstanceConfig].Config.InstanceHostnameMappingFLPTH)
+	hostnameMappingFile, err := os.Create(filepath.Join((*ConfigObjectIndices.InstanceList)[indexInInstanceConfig].Dir, "parsed", "hostnameMapping.json"))
+	fmt.Println(filepath.Join((*ConfigObjectIndices.InstanceList)[indexInInstanceConfig].Dir, "parsed", "hostnameMapping.json"))
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		return err
 	}
 	defer hostnameMappingFile.Close()
 
-	availableHostnamesListFile, err := os.Create(InstanceConfigObjectIndices[indexInInstanceConfig].Config.InstanceIPMapFLPTH)
+	availableHostnamesListFile, err := os.Create(filepath.Join((*ConfigObjectIndices.InstanceList)[indexInInstanceConfig].Dir, "parsed", "availableHostnamesListFile.txt"))
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		return err
 	}
-	defer hostnameMappingFile.Close()
+	defer availableHostnamesListFile.Close()
 
 	//create write streams to the files
 	hostnameMappingFileWriter := bufio.NewWriter(hostnameMappingFile)
 	availableHostnamesListFileWriter := bufio.NewWriter(availableHostnamesListFile)
 
 	//stream hostnameMapping to file
-	_, err_2 := fmt.Fprintln(hostnameMappingFileWriter, hostnameMapping)
+	toWriteHostnameMapping, err := json.Marshal(hostnameMapping)
+	if err != nil {
+		logger.WriteLog(&logger.ErrorTypes.Error, &err)
+		return err
+	}
+
+	_, err_2 := fmt.Fprintln(hostnameMappingFileWriter, string(toWriteHostnameMapping))
 	if err_2 != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err_2)
 		return err
 	}
 
-	_, err_3 := fmt.Fprintln(availableHostnamesListFileWriter, availableHostnames)
+	toWriteAvailableHostnames, err := json.Marshal(availableHostnames)
+	if err != nil {
+		logger.WriteLog(&logger.ErrorTypes.Error, &err)
+		return err
+	}
+
+	_, err_3 := fmt.Fprintln(availableHostnamesListFileWriter, string(toWriteAvailableHostnames))
 	if err_3 != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err_3)
 		return err
 	}
 	return nil
 }
+
+//becoz of some shit the json isnt beint streamed to the files
