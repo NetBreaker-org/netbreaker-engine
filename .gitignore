@@ -7,3 +7,5 @@ src/controllers/logs/reqLogs/liblogger.so
 /proxy
 start.sh
 main/main
+instance_manager/instance_manager
+trash

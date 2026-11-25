@@ -17,7 +17,7 @@ import (
 
 // read the raw hostnameMapping.json, with no meta data.
 // misc data is stored in stats.json
-func HostnameMapping(filePath *string) (*[]configInterfaces.StatusMapping, error) {
+func HostnameMapping(filePath *string, indexInInstanceConfig int) (*[]configInterfaces.StatusMapping, error) {
 	//get buffer data of that file
 	byte_slice, err := os.ReadFile(*filePath)
 	if err != nil {
@@ -25,13 +25,13 @@ func HostnameMapping(filePath *string) (*[]configInterfaces.StatusMapping, error
 			var sending_err error = fmt.Errorf("Error : Couldn't read file : %s while loading Hostname Mapping. Attempting to load again", *filePath)
 			logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
 
-			nestedErr := hostNameMapFilesBuilder(ConfigObjectIndices.IPMapFLPTH)
+			nestedErr := hostNameMapFilesBuilder(InstanceConfigObjectIndices[indexInInstanceConfig].Config.InstanceIPMapFLPTH, indexInInstanceConfig)
 			if nestedErr != nil {
 				var sending_errNested error = fmt.Errorf("Error : Couldn't read file : %s while loading Hostname Mapping. Not attempting again (nestedErr)", *filePath)
 				logger.WriteLog(&logger.ErrorTypes.Error, &sending_errNested)
 				return nil, err
 			}
-			return HostnameMapping(filePath)
+			return HostnameMapping(filePath, indexInInstanceConfig)
 		}
 		var sending_err error = fmt.Errorf("Error : Couldn't read file : %s while loading Hostname Mapping. Not attempting again", *filePath)
 		logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
@@ -52,7 +52,7 @@ func HostnameMapping(filePath *string) (*[]configInterfaces.StatusMapping, error
 }
 
 // read the list of available hostnames
-func AvailableHostnameReader(filePath *string) (*[]string, error) {
+func AvailableHostnameReader(filePath *string, indexInInstanceConfig int) (*[]string, error) {
 	//get buffer data of that file
 	byte_slice, err := os.ReadFile(*filePath)
 	if err != nil {
@@ -60,13 +60,13 @@ func AvailableHostnameReader(filePath *string) (*[]string, error) {
 			var sending_err error = fmt.Errorf("Error : Couldn't read file : %s while loading available hostnames list. Attempting to load again", *filePath)
 			logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
 
-			nestedErr := hostNameMapFilesBuilder(ConfigObjectIndices.IPMapFLPTH)
+			nestedErr := hostNameMapFilesBuilder(InstanceConfigObjectIndices[indexInInstanceConfig].Config.InstanceIPMapFLPTH, indexInInstanceConfig)
 			if nestedErr != nil {
 				var sending_errNested error = fmt.Errorf("Error : Couldn't read file : %s while loading available hostnames list. Not attempting again", *filePath)
 				logger.WriteLog(&logger.ErrorTypes.Error, &sending_errNested)
 				return nil, err
 			}
-			return AvailableHostnameReader(filePath)
+			return AvailableHostnameReader(filePath, indexInInstanceConfig)
 		}
 		var sending_err error = fmt.Errorf("Error : Couldn't read file : %s while loading available hostnames list. Not attempting again", *filePath)
 		logger.WriteLog(&logger.ErrorTypes.Error, &sending_err)
@@ -82,7 +82,7 @@ func AvailableHostnameReader(filePath *string) (*[]string, error) {
 	return contentptr, nil
 }
 
-func hostNameMapFilesBuilder(filePath string) error {
+func hostNameMapFilesBuilder(filePath string, indexInInstanceConfig int) error {
 	//Read the IPMap.json file
 	fmt.Println(filePath)
 	buffFileData, err := os.ReadFile(filePath)
@@ -145,14 +145,14 @@ func hostNameMapFilesBuilder(filePath string) error {
 	//--write hostnameMapping to hostnameMappingFile & availableHostnames to availableHostnamesListFile--
 
 	//create hostnameMappingFile & availableHostnamesListFile
-	hostnameMappingFile, err := os.Create(ConfigObjectIndices.HostnameMappingFLPTH)
+	hostnameMappingFile, err := os.Create(InstanceConfigObjectIndices[indexInInstanceConfig].Config.InstanceHostnameMappingFLPTH)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		return err
 	}
 	defer hostnameMappingFile.Close()
 
-	availableHostnamesListFile, err := os.Create(ConfigObjectIndices.IPMapFLPTH)
+	availableHostnamesListFile, err := os.Create(InstanceConfigObjectIndices[indexInInstanceConfig].Config.InstanceIPMapFLPTH)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		return err

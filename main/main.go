@@ -61,9 +61,9 @@ func main() {
 		instanceConfig.InstanceIPWhiteList = contentWList
 
 		//Load IPMap
-		instanceConfig.InstanceAvailableHostnamesFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "availableHostnamesListFile.txt")
+		instanceConfig.InstanceAvailableHostnamesFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "parsed", "availableHostnamesListFile.txt")
 		instanceConfig.InstanceIPMapFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "IPMap.json")
-		contentAvailableHostnameArray, err := configloaders.AvailableHostnameReader(&instanceConfig.InstanceIPMapFLPTH)
+		contentAvailableHostnameArray, err := configloaders.AvailableHostnameReader(&instanceConfig.InstanceIPMapFLPTH, i)
 		if err != nil {
 			logger.WriteLog(&logger.ErrorTypes.Error, &err)
 			fmt.Println(err)
@@ -73,8 +73,8 @@ func main() {
 		instanceConfig.InstanceIPMap = contentAvailableHostnameArray
 
 		// Load hostnameMapping
-		instanceConfig.InstanceHostnameMappingFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "hostnameMapping.json")
-		contentHostnameMapping, err := configloaders.HostnameMapping(&instanceConfig.InstanceHostnameMappingFLPTH)
+		instanceConfig.InstanceHostnameMappingFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "parsed", "hostnameMapping.json")
+		contentHostnameMapping, err := configloaders.HostnameMapping(&instanceConfig.InstanceHostnameMappingFLPTH, i)
 		if err != nil {
 			logger.WriteLog(&logger.ErrorTypes.Error, &err)
 			fmt.Println(err)
