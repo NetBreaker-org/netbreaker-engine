@@ -5,3 +5,4 @@ import (
 )
 
 var ConfigObjectIndices configInterfaces.ConfigObjectPointers = configInterfaces.ConfigObjectPointers{}
+var InstanceConfigObjectIndices []configInterfaces.InstanceConfigs = []configInterfaces.InstanceConfigs{}

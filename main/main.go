@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	configloaders "github.com/NetBreaker-org/netbreaker-engine/main/configLoaders"
+	"github.com/NetBreaker-org/netbreaker-engine/main/configLoaders/configInterfaces"
 	"github.com/NetBreaker-org/netbreaker-engine/main/generals"
 	"github.com/NetBreaker-org/netbreaker-engine/main/logger"
 )
@@ -21,58 +22,69 @@ func main() {
 	}
 
 	//Load instances file : instances.json
-	configloaders.ConfigObjectIndices.ServerConfigFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/instances.json")
-	InstancesFile, err := configloaders.InstancesConfig(&configloaders.ConfigObjectIndices.ServerConfigFLPTH)
+	configloaders.ConfigObjectIndices.InstanceListFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/instances.json")
+	InstancesFile, err := configloaders.InstancesConfig(&configloaders.ConfigObjectIndices.InstanceListFLPTH)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		fmt.Println(err)
 		return
 	}
 
-	//Load config file IP-Black List
-	// configloaders.ConfigObjectIndices.IPBlackListFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/ipBlackList.txt")
-	// contentBList, err := configloaders.LoadIPBlacklist(&configloaders.ConfigObjectIndices.IPBlackListFLPTH)
-	// if err != nil {
-	// 	logger.WriteLog(&logger.ErrorTypes.Error, &err)
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	//Load config file IP-White List
-	// configloaders.ConfigObjectIndices.IPWhiteListFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/ipWhiteList.txt")
-	// contentWList, err := configloaders.LoadIPWhitelist(&configloaders.ConfigObjectIndices.IPWhiteListFLPTH)
-	// if err != nil {
-	// 	logger.WriteLog(&logger.ErrorTypes.Error, &err)
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	//Load IPMap
-	// configloaders.ConfigObjectIndices.AvailableHostnamesFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/parsed/availableHostnamesListFile.txt")
-	// configloaders.ConfigObjectIndices.IPMapFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/IPMap.json")
-	// contentAvailableHostnameArray, err := configloaders.AvailableHostnameReader(&configloaders.ConfigObjectIndices.IPMapFLPTH)
-	// if err != nil {
-	// 	logger.WriteLog(&logger.ErrorTypes.Error, &err)
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	//Load hostnameMapping
-	// configloaders.ConfigObjectIndices.HostnameMappingFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/parsed/hostnameMapping.json")
-	// contentHostnameMapping, err := configloaders.HostnameMapping(&configloaders.ConfigObjectIndices.HostnameMappingFLPTH)
-	// if err != nil {
-	// 	logger.WriteLog(&logger.ErrorTypes.Error, &err)
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
 	//Index config objects
 	configloaders.ConfigObjectIndices.ServerConfig = MainConfig
 	configloaders.ConfigObjectIndices.InstanceList = InstancesFile
-	// configloaders.ConfigObjectIndices.IPBlackList = contentBList
-	// configloaders.ConfigObjectIndices.IPWhiteList = contentWList
-	// configloaders.ConfigObjectIndices.IPMap = contentAvailableHostnameArray
-	// configloaders.ConfigObjectIndices.HostnameMapping = contentHostnameMapping
+
+	//setup config for each instance
+	for i := range *configloaders.ConfigObjectIndices.InstanceList {
+		var instanceConfig configInterfaces.InstanceConfigObjectPointers = configInterfaces.InstanceConfigObjectPointers{}
+
+		//Load config file IP-Black List
+		instanceConfig.InstanceIPBlackListFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "ipBlackList.txt")
+		contentBList, err := configloaders.LoadIPBlacklist(&instanceConfig.InstanceIPBlackListFLPTH)
+		if err != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+			fmt.Println(err)
+			return
+		}
+
+		instanceConfig.InstanceIPBlackList = contentBList
+
+		//Load config file IP-White List
+		instanceConfig.InstanceIPWhiteListFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "ipWhiteList.txt")
+		contentWList, err := configloaders.LoadIPWhitelist(&instanceConfig.InstanceIPWhiteListFLPTH)
+		if err != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+			fmt.Println(err)
+			return
+		}
+
+		instanceConfig.InstanceIPWhiteList = contentWList
+
+		//Load IPMap
+		instanceConfig.InstanceAvailableHostnamesFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "availableHostnamesListFile.txt")
+		instanceConfig.InstanceIPMapFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "IPMap.json")
+		contentAvailableHostnameArray, err := configloaders.AvailableHostnameReader(&instanceConfig.InstanceIPMapFLPTH)
+		if err != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+			fmt.Println(err)
+			return
+		}
+
+		instanceConfig.InstanceIPMap = contentAvailableHostnameArray
+
+		// Load hostnameMapping
+		instanceConfig.InstanceHostnameMappingFLPTH = filepath.Join((*configloaders.ConfigObjectIndices.InstanceList)[i].Dir, "hostnameMapping.json")
+		contentHostnameMapping, err := configloaders.HostnameMapping(&instanceConfig.InstanceHostnameMappingFLPTH)
+		if err != nil {
+			logger.WriteLog(&logger.ErrorTypes.Error, &err)
+			fmt.Println(err)
+			return
+		}
+
+		instanceConfig.InstanceHostnameMapping = contentHostnameMapping
+
+		configloaders.InstanceConfigObjectIndices = append(configloaders.InstanceConfigObjectIndices, configInterfaces.InstanceConfigs{Metadata: (*configloaders.ConfigObjectIndices.InstanceList)[i], Config: instanceConfig})
+	}
 
 	//Start Service
 	serverAddr := ":" + MainConfig.Port

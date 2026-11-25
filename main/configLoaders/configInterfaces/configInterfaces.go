@@ -71,6 +71,7 @@ type InstancesJson struct {
 }
 
 // Index of all config objects
+// exported as a variable
 type ConfigObjectPointers struct {
 	ServerConfig      *ServerConfig `json:"ServerConfig"`
 	ServerConfigFLPTH string        `json:"ServerConfigFLPTH"`
@@ -85,22 +86,27 @@ type ConfigObjectPointers struct {
 	IPWhiteListFLPTH string    `json:"IPWhiteListFLPTH"`
 }
 
-type InstaceConfigObjectPointers struct {
-	ServerConfig      *InstanceServerConfig `json:"ServerConfig"`
-	ServerConfigFLPTH string                `json:"ServerConfigFLPTH"`
+// Index for config object pointers for all instances
+type InstanceConfigObjectPointers struct {
+	InstanceServerConfig      *InstanceServerConfig `json:"ServerConfig"`
+	InstanceServerConfigFLPTH string                `json:"ServerConfigFLPTH"`
 
-	IPBlackList      *[]string `json:"ip_bl"`
-	IPBlackListFLPTH string    `json:"IPBlackListFLPTH"`
+	InstanceIPBlackList      *[]string `json:"ip_bl"`
+	InstanceIPBlackListFLPTH string    `json:"IPBlackListFLPTH"`
 
-	IPWhiteList      *[]string `json:"ip_wl"`
-	IPWhiteListFLPTH string    `json:"IPWhiteListFLPTH"`
+	InstanceIPWhiteList      *[]string `json:"ip_wl"`
+	InstanceIPWhiteListFLPTH string    `json:"IPWhiteListFLPTH"`
 
-	IPMap                   *[]string `json:"ip_map"`
-	AvailableHostnamesFLPTH string    `json:"AvailableHostnamesFLPTH"`
-	IPMapFLPTH              string    `json:"IPMapFLPTH"`
+	InstanceIPMap                   *[]string `json:"ip_map"`
+	InstanceAvailableHostnamesFLPTH string    `json:"AvailableHostnamesFLPTH"`
+	InstanceIPMapFLPTH              string    `json:"IPMapFLPTH"`
 
-	HostnameMapping      *[]StatusMapping `json:"hostnameMapping_map"`
-	HostnameMappingFLPTH string           `json:"hostnameMappingFLPTH"`
+	InstanceHostnameMapping      *[]StatusMapping `json:"hostnameMapping_map"`
+	InstanceHostnameMappingFLPTH string           `json:"hostnameMappingFLPTH"`
 }
 
-//Type for array of all instances with their data
+// Type for array of all instances with their data
+type InstanceConfigs struct {
+	Metadata InstancesJson                `json:"InstanceMetadata"`
+	Config   InstanceConfigObjectPointers `json:"InstanceConfig"`
+}
