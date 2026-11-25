@@ -97,7 +97,7 @@ func CreateInstance(seedFilePath string) int {
 		var toAppendToInstances_json InstancesJson
 		toAppendToInstances_json.Name = storeSeedFileJson.Name
 		toAppendToInstances_json.Schema = storeSeedFileJson.Schema
-		toAppendToInstances_json.Name = instance_filepath
+		toAppendToInstances_json.Dir = instance_filepath
 
 		//append to instance_json
 		instance_json = append(instance_json, toAppendToInstances_json)
