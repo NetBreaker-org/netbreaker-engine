@@ -12,6 +12,8 @@ import (
 )
 
 func main() {
+	fmt.Printf("Attempting to start netbreaker...\n")
+	fmt.Printf("\n")
 	//Load config file main_config.json
 	configloaders.ConfigObjectIndices.ServerConfigFLPTH = filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/master_config.json")
 	MainConfig, err := configloaders.MainConfig(&configloaders.ConfigObjectIndices.ServerConfigFLPTH)
@@ -36,6 +38,9 @@ func main() {
 
 	//setup config for each instance
 	for i := range *configloaders.ConfigObjectIndices.InstanceList {
+		fmt.Printf("\n")
+		fmt.Printf("Initializing configurations for %s\n", (*configloaders.ConfigObjectIndices.InstanceList)[i].Name)
+
 		var instanceConfig configInterfaces.InstanceConfigObjectPointers = configInterfaces.InstanceConfigObjectPointers{}
 
 		//Load config file IP-Black List
@@ -84,6 +89,7 @@ func main() {
 		instanceConfig.InstanceHostnameMapping = contentHostnameMapping
 
 		configloaders.InstanceConfigObjectIndices = append(configloaders.InstanceConfigObjectIndices, configInterfaces.InstanceConfigs{Metadata: (*configloaders.ConfigObjectIndices.InstanceList)[i], Config: instanceConfig})
+		fmt.Printf("\n")
 	}
 
 	//Start Service
@@ -92,7 +98,7 @@ func main() {
 	configloaders.DeleteIPBlackList([]string{"234.435.2.5"})
 
 	server := http.NewServeMux()
-	fmt.Printf("Started server on %s...\n", serverAddr)
+	fmt.Printf("Started netbreaker on %s...\n", serverAddr)
 	err_listen := http.ListenAndServe(serverAddr, server)
 	if err_listen != nil {
 		fmt.Printf("#Err_Loc_2 Server failed to start: %v", err_listen)

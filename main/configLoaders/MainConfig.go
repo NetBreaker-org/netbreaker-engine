@@ -24,7 +24,7 @@ func MainConfig(filePath *string) (*configInterfaces.ServerConfig, error) {
 	}
 
 	contentptr := &mainConfig
-	fmt.Println("...Succesfully initialized master config file  ✔")
+	fmt.Println("Succesfully initialized master config file  ✔")
 	return contentptr, nil
 }
 
@@ -45,6 +45,6 @@ func InstancesConfig(filePath *string) (*[]configInterfaces.InstancesJson, error
 	}
 
 	contentptr := &instanceConfig
-	fmt.Println("...Succesfully initialized list of all proxy instances  ✔")
+	fmt.Println("Succesfully initialized list of all proxy instances  ✔")
 	return contentptr, nil
 }
