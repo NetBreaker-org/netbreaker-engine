@@ -161,9 +161,16 @@ func hostNameMapFilesBuilder(filePath string, indexInInstanceConfig int) error {
 		return err
 	}
 
+	//write to hostnameMapping file
 	_, err_2 := fmt.Fprintln(hostnameMappingFileWriter, string(toWriteHostnameMapping))
 	if err_2 != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err_2)
+		return err
+	}
+
+	err = hostnameMappingFileWriter.Flush()
+	if err != nil {
+		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		return err
 	}
 
@@ -178,6 +185,13 @@ func hostNameMapFilesBuilder(filePath string, indexInInstanceConfig int) error {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err_3)
 		return err
 	}
+
+	err = availableHostnamesListFileWriter.Flush()
+	if err != nil {
+		logger.WriteLog(&logger.ErrorTypes.Error, &err)
+		return err
+	}
+
 	return nil
 }
 
