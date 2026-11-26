@@ -1,0 +1,17 @@
+{
+  "status": "1",
+  "port": "53942",
+  "cipherkey": "5LmOmM48QNSWcMDx5s2ObqyAYKEUdyRh",
+  "cookieEncryptOption": "1",
+  "maxRequestRateLimit": "600",
+  "inspectOriginMode": "blacklist",
+  "adminMode": "1",
+  "adminDefinedPath": "/3f8",
+  "adminDefinedPathRequiredReloadCount": "5",
+  "adminDefinedPathReloadTimeWindow": "5000",
+  "protocol": "https",
+  "sslKeyPath": "/etc/letsencrypt/live/maywill.com/privkey.pem",
+  "sslCertPath": "/etc/letsencrypt/live/maywill.com/fullchain.pem",
+  "errorPagePort": "3434",
+  "workers": "auto"
+}

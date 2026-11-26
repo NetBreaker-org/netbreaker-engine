@@ -1,3 +1,15 @@
 package generals
 
-var EnvPath Paths = Paths{SystemPath: "/home/kaushal/simulation/NetBreaker"}
+import (
+	"path/filepath"
+)
+
+func SetSysPath(hi string) string {
+	a, b := filepath.Abs(hi)
+	if b != nil {
+		return hi
+	}
+	return a
+}
+
+var EnvPath Paths = Paths{SystemPath: SetSysPath("../FHSsimulation")}

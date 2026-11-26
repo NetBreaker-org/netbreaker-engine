@@ -1,0 +1,198 @@
+//DEVELOPMENT TESTING LOGS
+
+2026-11-16 00:51:05.182596516 +0530 IST m=+0.011803935  |  Error : Received nil pointer in AppendIPBlackList call
+
+2026-11-16 00:52:09.3773451 +0530 IST m=+0.000639213  |  Error : Received nil pointer in AppendIPBlackList call
+
+2026-11-16 00:55:31.472829795 +0530 IST m=+0.000736292  |  Error : Received nil pointer in AppendIPBlackList call
+
+2026-11-16 00:56:29.446301561 +0530 IST m=+0.001328286  |  Error : Received nil pointer in AppendIPBlackList call
+
+2026-11-16 13:15:43.843575333 +0530 IST m=+0.011288234  |  Error : Received nil pointer in AppendIPBlackList call
+
+2026-11-16 13:19:26.861943214 +0530 IST m=+0.001116502  |  Error : Received nil pointer in AppendIPBlackList call
+
+2026-11-18 18:01:43.703947216 +0530 IST m=+0.003648402  |  rename /home/kaushal/simulation/NetBreaker/etc/netbreaker/temp-3406994533.txt /home/kaushal/simulation/NetBreaker/etc/netbreaker: file exists
+
+2026-11-18 18:24:57.165834494 +0530 IST m=+0.000791012  |  Error : Couldn't start DeleteIPWhiteList routine
+
+2026-11-19 07:47:26.073569811 +0530 IST m=+0.003137754  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt while loading Hostname Mapping
+
+2026-11-19 07:47:26.074390247 +0530 IST m=+0.003958190  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt: no such file or directory
+
+2026-11-19 07:47:26.074432755 +0530 IST m=+0.004000689  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt while loading Hostname Mapping. Not attempting again
+
+2026-11-19 07:47:26.07446259 +0530 IST m=+0.004030523  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt: no such file or directory
+
+2026-11-19 07:49:19.052008339 +0530 IST m=+0.000760841  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt while loading Hostname Mapping
+
+2026-11-19 07:49:19.052156542 +0530 IST m=+0.000909044  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt: no such file or directory
+
+2026-11-19 07:49:19.052179023 +0530 IST m=+0.000931535  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt while loading Hostname Mapping. Not attempting again
+
+2026-11-19 07:49:19.0521991 +0530 IST m=+0.000951602  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt: no such file or directory
+
+2026-11-19 07:50:21.911708731 +0530 IST m=+0.000723073  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt while loading Hostname Mapping
+
+2026-11-19 07:50:21.91187676 +0530 IST m=+0.000891092  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt: no such file or directory
+
+2026-11-19 07:50:21.911910001 +0530 IST m=+0.000924333  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt while loading Hostname Mapping. Not attempting again
+
+2026-11-19 07:50:21.911937071 +0530 IST m=+0.000951403  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt: no such file or directory
+
+2026-11-19 08:02:41.283614492 +0530 IST m=+0.001377551  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt while loading available hostnames list. Attempting to load again
+
+2026-11-19 08:02:41.283831704 +0530 IST m=+0.001594723  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt: no such file or directory
+
+2026-11-19 08:02:41.28386732 +0530 IST m=+0.001630339  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt while loading available hostnames list. Not attempting again
+
+2026-11-19 08:02:41.2838946 +0530 IST m=+0.001657609  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/availableHostnamesListFile.txt: no such file or directory
+
+2026-11-19 08:10:11.228583929 +0530 IST m=+0.002430585  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-19 08:10:11.229015018 +0530 IST m=+0.002861674  |  json: cannot unmarshal array into Go value of type map[string][]string
+
+2026-11-19 08:10:11.229063668 +0530 IST m=+0.002910294  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Not attempting again
+
+2026-11-19 08:10:11.229100386 +0530 IST m=+0.002947012  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json: no such file or directory
+
+2026-11-19 08:15:54.362454928 +0530 IST m=+0.001307975  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-19 08:15:54.362739569 +0530 IST m=+0.001592616  |  json: cannot unmarshal array into Go value of type map[string][]string
+
+2026-11-19 08:15:54.362789881 +0530 IST m=+0.001642908  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Not attempting again
+
+2026-11-19 08:15:54.36283324 +0530 IST m=+0.001686267  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json: no such file or directory
+
+2026-11-19 08:18:25.564254659 +0530 IST m=+0.000988004  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-19 08:18:25.564497264 +0530 IST m=+0.001230589  |  json: cannot unmarshal array into Go value of type map[string][]string
+
+2026-11-19 08:18:25.564541946 +0530 IST m=+0.001275271  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Not attempting again (nestedErr)
+
+2026-11-19 08:18:25.564587159 +0530 IST m=+0.001320484  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json: no such file or directory
+
+2026-11-19 08:21:09.945498085 +0530 IST m=+0.000777782  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-19 08:21:09.94571312 +0530 IST m=+0.000992827  |  json: cannot unmarshal array into Go value of type map[string][]string
+
+2026-11-19 08:21:09.945750739 +0530 IST m=+0.001030426  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Not attempting again (nestedErr)
+
+2026-11-19 08:21:09.945781947 +0530 IST m=+0.001061634  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json: no such file or directory
+
+2026-11-20 06:23:34.340109772 +0530 IST m=+0.021343692  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-24 11:35:18.731649461 +0530 IST m=+0.007398762  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/main_config.json: no such file or directory
+
+2026-11-24 12:03:43.409432819 +0530 IST m=+0.000972218  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/ipBlackList.txt: no such file or directory
+
+2026-11-24 12:04:40.645526717 +0530 IST m=+0.000940488  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/ipBlackList.txt: no such file or directory
+
+2026-11-24 12:04:42.233460982 +0530 IST m=+0.000733025  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/ipBlackList.txt: no such file or directory
+
+2026-11-24 12:04:45.203002481 +0530 IST m=+0.001087610  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-24 12:15:52.181843421 +0530 IST m=+0.001811617  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-24 12:16:12.062193877 +0530 IST m=+0.001639820  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-24 12:16:24.032462403 +0530 IST m=+0.001185190  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 06:17:08.685696446 +0530 IST m=+0.000900408  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 06:17:56.717971656 +0530 IST m=+0.001045405  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 06:18:03.410202861 +0530 IST m=+0.001138779  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 06:18:37.013052195 +0530 IST m=+0.000939487  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 06:18:42.52221498 +0530 IST m=+0.000938376  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 06:28:47.038395751 +0530 IST m=+0.001670615  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 06:38:31.804128262 +0530 IST m=+0.009506173  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 06:57:20.36819184 +0530 IST m=+0.002010109  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 07:01:07.843025322 +0530 IST m=+0.001020596  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-25 08:28:38.804940722 +0530 IST m=+0.002518324  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 12:32:17.886422913 +0530 IST m=+0.002358439  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 12:34:10.728937681 +0530 IST m=+0.000849851  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 12:47:17.736102988 +0530 IST m=+0.001680205  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 12:56:19.046523324 +0530 IST m=+0.001165254  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 13:04:38.272640786 +0530 IST m=+0.001588462  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 13:07:15.736005668 +0530 IST m=+0.000992337  |  stupid retard goofy motherfucker
+
+2026-11-25 14:33:39.104559555 +0530 IST m=+0.001299841  |  stupid retard goofy motherfucker
+
+2026-11-25 14:33:59.25060086 +0530 IST m=+0.002113374  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 14:33:59.250965443 +0530 IST m=+0.002477957  |  unexpected end of JSON input
+
+2026-11-25 14:35:47.255786426 +0530 IST m=+0.000638571  |  unexpected end of JSON input
+
+2026-11-25 14:38:14.858341663 +0530 IST m=+0.000870238  |  unexpected end of JSON input
+
+2026-11-25 14:48:49.094325636 +0530 IST m=+0.000885517  |  unexpected end of JSON input
+
+2026-11-25 14:50:07.567396253 +0530 IST m=+0.000672877  |  unexpected end of JSON input
+
+2026-11-25 14:55:21.930979807 +0530 IST m=+0.000671053  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 14:55:21.931458262 +0530 IST m=+0.001149528  |  unexpected end of JSON input
+
+2026-11-25 14:56:55.407648501 +0530 IST m=+0.001491540  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-25 14:56:55.408367401 +0530 IST m=+0.002210440  |  unexpected end of JSON input
+
+2026-11-26 07:54:31.638275497 +0530 IST m=+0.008889506  |  unexpected end of JSON input
+
+2026-11-26 08:01:07.721427272 +0530 IST m=+0.002301646  |  unexpected end of JSON input
+
+2026-11-26 08:01:23.068596846 +0530 IST m=+0.000939789  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-26 08:01:23.069391946 +0530 IST m=+0.001734878  |  unexpected end of JSON input
+
+2026-11-26 08:02:54.729599703 +0530 IST m=+0.001044632  |  unexpected end of JSON input
+
+2026-11-26 08:03:03.359937274 +0530 IST m=+0.001131202  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-26 08:03:03.360714952 +0530 IST m=+0.001908880  |  unexpected end of JSON input
+
+2026-11-26 08:03:50.876365196 +0530 IST m=+0.000887111  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-26 08:03:50.877198206 +0530 IST m=+0.001720121  |  unexpected end of JSON input
+
+2026-11-26 08:04:21.081553701 +0530 IST m=+0.000900625  |  unexpected end of JSON input
+
+2026-11-26 08:04:31.029498846 +0530 IST m=+0.001051325  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-26 08:04:31.030297483 +0530 IST m=+0.001849971  |  unexpected end of JSON input
+
+2026-11-26 08:09:58.738251345 +0530 IST m=+0.000807203  |  Error : Couldn't read file : /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-26 08:09:58.740242926 +0530 IST m=+0.002798775  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-26 08:17:57.934982589 +0530 IST m=+0.001479757  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-26 08:21:03.890873624 +0530 IST m=+0.003233780  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-26 08:21:37.355717325 +0530 IST m=+0.001836958  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-26 08:24:51.43236578 +0530 IST m=+0.001461570  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-26 12:41:22.603441759 +0530 IST m=+0.003494691  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-26 12:41:44.871890051 +0530 IST m=+0.001069290  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/ipBlackList.txt: no such file or directory
+
+2026-11-26 12:45:55.544658759 +0530 IST m=+0.002680773  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-26 12:48:38.800442635 +0530 IST m=+0.001378244  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/ipBlackList.txt: no such file or directory
+
