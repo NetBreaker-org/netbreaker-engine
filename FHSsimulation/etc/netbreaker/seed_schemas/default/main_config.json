@@ -1,7 +1,7 @@
 {
   "status": "1",
   "port": "53942",
-  "cipherkey": "5LmOmM48QNSWcMDx5s2ObqyAYKEUdyRh",
+  "cipherkey": "(stringoflength32)oooooooooooooo",
   "cookieEncryptOption": "1",
   "maxRequestRateLimit": "600",
   "inspectOriginMode": "blacklist",
