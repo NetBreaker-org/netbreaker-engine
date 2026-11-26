@@ -18,11 +18,6 @@ import (
 // read the raw hostnameMapping.json, with no meta data.
 // misc data is stored in stats.json
 func HostnameMapping(filePath *string, indexInInstanceConfig int) (*[]configInterfaces.StatusMapping, error) {
-	// if len(InstanceConfigObjectIndices) == 0 {
-	// 	fmt.Println("stupid retard goofy motherfucker")
-	// 	return nil, errors.New("stupid retard goofy motherfucker")
-	// }
-
 	//get buffer data of that file
 	byte_slice, err := os.ReadFile(*filePath)
 	if err != nil {
