@@ -84,7 +84,6 @@ func AvailableHostnameReader(filePath *string, indexInInstanceConfig int) (*[]st
 
 func hostNameMapFilesBuilder(filePath string, indexInInstanceConfig int) error {
 	//Read the IPMap.json file
-	fmt.Println(filePath)
 	buffFileData, err := os.ReadFile(filePath)
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
@@ -131,7 +130,6 @@ func hostNameMapFilesBuilder(filePath string, indexInInstanceConfig int) error {
 
 	//create hostnameMappingFile & availableHostnamesListFile
 	hostnameMappingFile, err := os.Create(filepath.Join((*ConfigObjectIndices.InstanceList)[indexInInstanceConfig].Dir, "parsed", "hostnameMapping.json"))
-	fmt.Println(filepath.Join((*ConfigObjectIndices.InstanceList)[indexInInstanceConfig].Dir, "parsed", "hostnameMapping.json"))
 	if err != nil {
 		logger.WriteLog(&logger.ErrorTypes.Error, &err)
 		return err

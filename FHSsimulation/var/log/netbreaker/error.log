@@ -196,3 +196,11 @@
 
 2026-11-26 12:48:38.800442635 +0530 IST m=+0.001378244  |  open /home/kaushal/simulation/NetBreaker/etc/netbreaker/instances/project_website/ipBlackList.txt: no such file or directory
 
+2026-11-26 17:36:52.792962469 +0530 IST m=+0.001048481  |  Error : Couldn't read file : /home/kaushal/Documents/work/NetBreaker/NetBreaker/FHSsimulation/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-26 17:36:52.795139257 +0530 IST m=+0.003225309  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-26 17:45:03.961683145 +0530 IST m=+0.001480607  |  Error : Couldn't read file : /home/kaushal/Documents/work/NetBreaker/NetBreaker/FHSsimulation/etc/netbreaker/instances/project_website/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-26 17:45:03.98140135 +0530 IST m=+0.021198802  |  Error : Received nil pointer in DeleteIPBlackList call
+

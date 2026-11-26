@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/NetBreaker-org/netbreaker-engine/instance_manager/generals"
+	"github.com/NetBreaker-org/netbreaker-engine/main/generals"
 )
 
 type SeedFileStruct struct {
