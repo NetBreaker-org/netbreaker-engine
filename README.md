@@ -78,5 +78,4 @@
 <p align="center">
   Copyright &copy; 2026
   <a href="https://github.com/kaushal937">kaushal937</a>.<br>
-  All rights reserved.
 </p>
