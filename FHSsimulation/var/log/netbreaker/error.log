@@ -204,3 +204,9 @@
 
 2026-11-26 17:45:03.98140135 +0530 IST m=+0.021198802  |  Error : Received nil pointer in DeleteIPBlackList call
 
+2026-11-27 09:32:30.246849485 +0530 IST m=+0.001701451  |  Error : Received nil pointer in DeleteIPBlackList call
+
+2026-11-27 09:34:04.234002075 +0530 IST m=+0.000952701  |  Error : Couldn't read file : /home/kaushal/Documents/work/NetBreaker/NetBreaker/FHSsimulation/etc/netbreaker/instances/test/parsed/hostnameMapping.json while loading Hostname Mapping. Attempting to load again
+
+2026-11-27 09:34:04.234816989 +0530 IST m=+0.001767595  |  Error : Received nil pointer in DeleteIPBlackList call
+

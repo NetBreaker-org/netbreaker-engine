@@ -1,3 +1,3 @@
 package main
 
-//to write
+//to write for: netbreaker delete-instance <instance name>
