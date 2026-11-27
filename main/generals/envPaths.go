@@ -10,7 +10,7 @@ func SetSysPath(hi string) string {
 	return a
 }
 
-var EnvPath Paths = Paths{SystemPath: SetSysPath("../FHSsimulation")}
+var EnvPath Paths = Paths{SystemPath: SetSysPath("./FHSsimulation")}
 
 // switch to this before production
 // var EnvPath Paths = Paths{SystemPath: ""}
