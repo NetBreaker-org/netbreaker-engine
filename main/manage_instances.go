@@ -165,7 +165,7 @@ func DeleteInstance(instanceNameToDelete string) int {
 	if scanner.Scan() {
 		inText := scanner.Text()
 		if inText == "I am deleting "+instanceNameToDelete {
-			fmt.Printf("Deleting Instance %s.", instanceNameToDelete)
+			fmt.Printf("Deleting Instance %s.\n", instanceNameToDelete)
 
 			//delete folder
 			fmt.Printf("Attempting to delete instance folder...\n")
