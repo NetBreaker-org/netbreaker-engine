@@ -12,6 +12,8 @@ func main() {
 		CreateInstance(os.Args[2])
 	} else if os.Args[1] == "delete-instance" {
 		DeleteInstance(os.Args[2])
+	} else if os.Args[1] == "list-instances" {
+		ListInstances()
 	} else if os.Args[1] == "--help" || os.Args[1] == "-h" {
 		PrintHelp()
 	} else if os.Args[1] == "--version" {

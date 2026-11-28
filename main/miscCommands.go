@@ -34,7 +34,13 @@ func PrintHelp() {
 	fmt.Println("	Command : delete-instance")
 	fmt.Println("	Argument : <instance name>")
 	fmt.Println("	Example : netbreaker delete-instance test")
-	fmt.Println("	For more info: visit https://netbreaker.org/docs")
+	fmt.Println("	Deletes an existing instance. For more info: visit https://netbreaker.org/docs")
+
+	fmt.Println("\n")
+
+	fmt.Println("	Command : list-instance")
+	fmt.Println("	Example : netbreaker list-instance")
+	fmt.Println("	Lists all existing instance. For more info: visit https://netbreaker.org/docs")
 
 	fmt.Println("\n")
 }

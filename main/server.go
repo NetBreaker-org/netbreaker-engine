@@ -7,6 +7,7 @@ import (
 
 	configloaders "github.com/NetBreaker-org/netbreaker-engine/main/configLoaders"
 	"github.com/NetBreaker-org/netbreaker-engine/main/configLoaders/configInterfaces"
+	"github.com/NetBreaker-org/netbreaker-engine/main/conn"
 	"github.com/NetBreaker-org/netbreaker-engine/main/generals"
 	"github.com/NetBreaker-org/netbreaker-engine/main/logger"
 )
@@ -37,6 +38,9 @@ func serverStarter() {
 	configloaders.ConfigObjectIndices.InstanceList = InstancesFile
 
 	//setup config for each instance
+	if len(*configloaders.ConfigObjectIndices.InstanceList) == 0 {
+		fmt.Printf("\nNo instances found...\n\n")
+	}
 	for i := range *configloaders.ConfigObjectIndices.InstanceList {
 		fmt.Printf("\n")
 		fmt.Printf("Initializing configurations for %s\n", (*configloaders.ConfigObjectIndices.InstanceList)[i].Name)
@@ -95,10 +99,10 @@ func serverStarter() {
 	//Start Service
 	serverAddr := ":" + MainConfig.Port
 
-	configloaders.DeleteIPBlackList([]string{"234.435.2.5"})
+	go conn.ListenUDS()
 
 	server := http.NewServeMux()
-	fmt.Printf("Started netbreaker on %s...\n", serverAddr)
+	fmt.Printf("Started netbreaker http-client on %s...\n", serverAddr)
 	err_listen := http.ListenAndServe(serverAddr, server)
 	if err_listen != nil {
 		fmt.Printf("#Err_Loc_2 Server failed to start: %v", err_listen)

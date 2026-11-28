@@ -212,3 +212,28 @@ func DeleteInstance(instanceNameToDelete string) int {
 	}
 	return 0
 }
+
+// Function to list all the available instances, from instances.json
+func ListInstances() {
+	//open instances.json file and load to instances_json variable
+	var instance_json []InstancesJson
+	instFileByteSlice, err := os.ReadFile(filepath.Join(generals.EnvPath.SystemPath, "/etc/netbreaker/instances.json"))
+	if err != nil {
+		fmt.Printf("Can't read instances.json file.\n")
+		logger.WriteLog(&logger.ErrorTypes.Error, &err)
+		return
+	}
+
+	//Unmarshal the file data to instance_json
+	err = json.Unmarshal(instFileByteSlice, &instance_json)
+	if err != nil {
+		fmt.Printf("Invalid JSON in instances.json\n")
+		logger.WriteLog(&logger.ErrorTypes.Error, &err)
+		return
+	}
+
+	//run for loop to read all instances and list them
+	for i := range instance_json {
+		fmt.Printf("%s\n", instance_json[i].Name)
+	}
+}
